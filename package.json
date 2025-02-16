@@ -4,7 +4,7 @@
   "description": "The user management service",
   "main": "index.js",
   "scripts": {
-    "dev": "node src/server.js",
+    "dev": "node dist/server.js",
     "format:fix": "prettier --write .",
     "format:check": "prettier --check .",
     "lint:fix": "eslint . --fix ",
@@ -24,9 +24,13 @@
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.24.0"
   },
-  
-    "lint-staged": {
-      "*.ts":["npm run lint:fix","npm run format:fix"]
-    }
-  
+  "lint-staged": {
+    "*.ts": [
+      "npm run lint:fix",
+      "npm run format:fix"
+    ]
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7"
+  }
 }
