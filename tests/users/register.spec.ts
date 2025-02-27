@@ -3,7 +3,7 @@ import app from '../../src/app';
 import { User } from '../../src/entity/User';
 import { DataSource } from 'typeorm';
 import { AppDataSource } from '../../src/config/data-source';
-import { truncateTables } from '../utils';
+import { Roles } from '../../src/constants';
 
 describe('POST /auth/register', () => {
     let connection: DataSource;
@@ -14,7 +14,8 @@ describe('POST /auth/register', () => {
 
     beforeEach(async () => {
         //Database truncate
-        await truncateTables(connection);
+        await connection.dropDatabase();
+        await connection.synchronize();
     });
 
     afterAll(async () => {
@@ -88,7 +89,46 @@ describe('POST /auth/register', () => {
             expect(users[0].email).toBe(userData.email);
         });
 
-        it.todo('should return an id of created user');
+        it('should return an id of created user', async () => {
+            const userData = {
+                firstName: 'Nabin',
+                lastName: 'Shrestha',
+                email: 'ghimiren2057@gmail.com',
+                password: 'secret',
+            };
+
+            //Act
+
+            //@ts-ignore
+            await request(app).post('/auth/register').send(userData);
+
+            //Asert
+
+            const userRepository = connection.getRepository(User);
+            const users = await userRepository.find();
+            expect(users[0]).toHaveProperty('id');
+        });
+
+        it('should assign a customer role', async () => {
+            const userData = {
+                firstName: 'Nabin',
+                lastName: 'Shrestha',
+                email: 'ghimiren2057@gmail.com',
+                password: 'secret',
+            };
+
+            //Act
+
+            //@ts-ignore
+            await request(app).post('/auth/register').send(userData);
+
+            //Asert
+
+            const userRepository = connection.getRepository(User);
+            const users = await userRepository.find();
+            expect(users[0]).toHaveProperty('role');
+            expect(users[0].role).toBe(Roles.CUSTOMER);
+        });
     });
 
     describe('Fields are missing', () => {});
