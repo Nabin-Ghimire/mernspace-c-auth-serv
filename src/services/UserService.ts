@@ -19,13 +19,15 @@ export class UserService {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         try {
-            return await this.userRepository.save({
+            const userData = await this.userRepository.save({
                 firstName,
                 lastName,
                 email,
                 password: hashedPassword,
                 role: Roles.CUSTOMER,
             });
+
+            return userData;
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
             const error = createHttpError(
