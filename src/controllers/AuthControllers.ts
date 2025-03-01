@@ -18,17 +18,18 @@ export class AuthController {
         const result = validationResult(req);
         if (!result.isEmpty()) {
             res.status(400).json({ errors: result.array() });
+            return;
         }
 
         const { firstName, lastName, email, password } = req.body;
+        this.logger.debug('New request to register user', {
+            firstName,
+            lastName,
+            email,
+            password: '*******',
+        });
 
         try {
-            this.logger.debug('New request to register user', {
-                firstName,
-                lastName,
-                email,
-                password: '*******',
-            });
             const user = await this.userService.create({
                 firstName,
                 lastName,
