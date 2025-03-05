@@ -217,8 +217,6 @@ describe('POST /auth/register', () => {
                 }
             });
 
-            console.log('Access token', accessToken);
-
             expect(accessToken).toBeDefined();
             expect(refreshToken).toBeDefined();
 
