@@ -170,4 +170,61 @@ export class AuthController {
 
         res.json({ ...user, password: undefined });
     }
+
+    async refresh(req: AuthRequest, res: Response, next: NextFunction) {
+        const payload: JwtPayload = {
+            sub: req.auth.sub,
+            role: req.auth.role,
+        };
+
+        try {
+            //Generating access token
+            const accessToken = this.tokenService.generateAccessToken(payload);
+
+            const user = await this.userService.findById(Number(req.auth.sub));
+            if (!user) {
+                const error = createHttpError(
+                    400,
+                    'User with the token could not found',
+                );
+                next(error);
+                return;
+            }
+
+            //Persist the refresh token. Created a database table for refresh token
+            const newRefreshToken =
+                await this.tokenService.persistRefreshToken(user);
+
+            //Deleting existing refresh token id
+            await this.tokenService.deleteRefreshTokenById(Number(req.auth.id));
+
+            //Generating refresh token
+            const refreshToken = this.tokenService.generateRefreshToken({
+                ...payload,
+                id: String(newRefreshToken.id),
+            });
+
+            res.cookie('accessToken', accessToken, {
+                domain: 'localhost',
+                sameSite: 'strict',
+                maxAge: 1000 * 60 * 60, //1 hour
+                httpOnly: true,
+            });
+            res.cookie('refreshToken', refreshToken, {
+                domain: 'localhost',
+                sameSite: 'strict',
+                maxAge: 1000 * 60 * 60 * 24 * 365, //1 hour
+                httpOnly: true,
+            });
+
+            this.logger.info('User has been logged in', { id: user.id });
+
+            res.json({ id: user.id });
+        } catch (error) {
+            next(error);
+            return;
+        }
+
+        res.json({});
+    }
 }
