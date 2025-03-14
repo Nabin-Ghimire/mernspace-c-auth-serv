@@ -227,4 +227,17 @@ export class AuthController {
 
         res.json({});
     }
+
+    async logout(req: AuthRequest, res: Response, next: NextFunction) {
+        try {
+            await this.tokenService.deleteRefreshTokenById(Number(req.auth.id)); //This (req.auth.id) is returned by authenticate middleware while validating refresh token by expressJWT.
+            this.logger.info('User has been logged out', { id: req.auth.sub });
+            res.clearCookie('accessToken');
+            res.clearCookie('refreshToken');
+            res.json({});
+        } catch (error) {
+            next(error);
+            return;
+        }
+    }
 }
