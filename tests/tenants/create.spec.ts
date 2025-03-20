@@ -32,7 +32,7 @@ describe('POST /tenants', () => {
         await connection.destroy();
     });
 
-    describe('Given al fielsd', () => {
+    describe('Given all fields', () => {
         it('should return 201 status code', async () => {
             const tenentData = {
                 name: 'Tenant name',
