@@ -3,9 +3,7 @@ import { AuthRequest, RegisterUserRequest } from '../types';
 import { UserService } from '../services/UserService';
 import { Logger } from 'winston';
 import { validationResult } from 'express-validator';
-import { Roles } from '../constants';
 import { JwtPayload } from 'jsonwebtoken';
-
 import { TokenService } from '../services/TokenService';
 import createHttpError from 'http-errors';
 import { CredentialService } from '../services/CredentialService';
@@ -30,12 +28,13 @@ export class AuthController {
             return;
         }
 
-        const { firstName, lastName, email, password } = req.body;
+        const { firstName, lastName, email, password, role } = req.body;
         this.logger.debug('New request to register user', {
             firstName,
             lastName,
             email,
             password: '*******',
+            role,
         });
 
         try {
@@ -44,7 +43,7 @@ export class AuthController {
                 lastName,
                 email,
                 password,
-                role: Roles.CUSTOMER,
+                role,
             });
 
             this.logger.info('User has been registered', { id: user.id });
@@ -101,7 +100,7 @@ export class AuthController {
         });
 
         try {
-            const user = await this.userService.findByEmail(email);
+            const user = await this.userService.findByEmailWithPassword(email);
 
             if (!user) {
                 const error = createHttpError(
@@ -152,7 +151,7 @@ export class AuthController {
             res.cookie('refreshToken', refreshToken, {
                 domain: 'localhost',
                 sameSite: 'strict',
-                maxAge: 1000 * 60 * 60 * 24 * 365, //1 hour
+                maxAge: 1000 * 60 * 60 * 24 * 365, //1 year
                 httpOnly: true,
             });
 
