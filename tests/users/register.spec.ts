@@ -33,6 +33,7 @@ describe('POST /auth/register', () => {
                 lastName: 'Shrestha',
                 email: 'ghimiren2057@gmail.com',
                 password: 'secret12345',
+                role: Roles.CUSTOMER,
             };
 
             //@ts-ignore
@@ -52,7 +53,8 @@ describe('POST /auth/register', () => {
                 firstName: 'Nabin',
                 lastName: 'Shrestha',
                 email: 'ghimiren2057@gmail.com',
-                password: 'secret',
+                password: 'secret12345',
+                role: Roles.CUSTOMER,
             };
 
             //Act
@@ -75,6 +77,7 @@ describe('POST /auth/register', () => {
                 lastName: 'Shrestha',
                 email: 'ghimiren2057@gmail.com',
                 password: 'secret12345',
+                role: Roles.CUSTOMER,
             };
 
             //Act
@@ -98,6 +101,7 @@ describe('POST /auth/register', () => {
                 lastName: 'Shrestha',
                 email: 'ghimiren2057@gmail.com',
                 password: 'secret12345',
+                role: Roles.CUSTOMER,
             };
 
             //Act
@@ -123,6 +127,7 @@ describe('POST /auth/register', () => {
                 lastName: 'Shrestha',
                 email: 'ghimiren2057@gmail.com',
                 password: 'secret12345',
+                role: Roles.CUSTOMER,
             };
 
             //Act
@@ -144,6 +149,7 @@ describe('POST /auth/register', () => {
                 lastName: 'Shrestha',
                 email: 'ghimiren2057@gmail.com',
                 password: 'secret12345',
+                role: Roles.CUSTOMER,
             };
 
             //Act
@@ -154,7 +160,7 @@ describe('POST /auth/register', () => {
             //Asert
 
             const userRepository = connection.getRepository(User);
-            const users = await userRepository.find();
+            const users = await userRepository.find({ select: ['password'] });
             expect(users[0].password).not.toBe(userData.password);
             expect(users[0].password).toHaveLength(60);
             expect(users[0].password).toMatch(/^\$2b\$\d+\$/);
@@ -166,7 +172,8 @@ describe('POST /auth/register', () => {
                 firstName: 'Nabin',
                 lastName: 'Shrestha',
                 email: 'ghimiren2057@gmail.com',
-                password: 'secret',
+                password: 'secret12345',
+                role: Roles.CUSTOMER,
             };
 
             const userRepository = connection.getRepository(User);
@@ -190,7 +197,8 @@ describe('POST /auth/register', () => {
                 firstName: 'Nabin',
                 lastName: 'Shrestha',
                 email: 'ghimiren2057@gmail.com',
-                password: 'secret1234',
+                password: 'secret12345',
+                role: Roles.CUSTOMER,
             };
 
             //Act
@@ -230,7 +238,8 @@ describe('POST /auth/register', () => {
                 firstName: 'Nabin',
                 lastName: 'Shrestha',
                 email: 'ghimiren2057@gmail.com',
-                password: 'secret1234',
+                password: 'secret12345',
+                role: Roles.CUSTOMER,
             };
 
             //Act
@@ -262,6 +271,7 @@ describe('POST /auth/register', () => {
                 lastName: 'Shrestha',
                 email: '', //gives error because email is missing
                 password: 'secret',
+                role: Roles.CUSTOMER,
             };
 
             //Act
@@ -285,6 +295,7 @@ describe('POST /auth/register', () => {
                 lastName: 'Shrestha',
                 email: 'ghimiren2057@gmail.com',
                 password: 'secret',
+                role: Roles.CUSTOMER,
             };
 
             //Act
@@ -308,6 +319,7 @@ describe('POST /auth/register', () => {
                 lastName: '', // gives error because lastName is missing
                 email: 'ghimiren2057@gmail.com',
                 password: 'secret',
+                role: Roles.CUSTOMER,
             };
 
             //Act
@@ -331,6 +343,7 @@ describe('POST /auth/register', () => {
                 lastName: 'Shrestha',
                 email: 'ghimiren2057@gmail.com',
                 password: '', //password is missing
+                role: Roles.CUSTOMER,
             };
 
             //Act
@@ -356,6 +369,7 @@ describe('POST /auth/register', () => {
                 lastName: 'Shrestha',
                 email: '  ghimiren2057@gmail.com  ', //Gives error because email is not trimmed
                 password: 'secret12345',
+                role: Roles.CUSTOMER,
             };
 
             //Act
@@ -376,6 +390,7 @@ describe('POST /auth/register', () => {
                 lastName: 'Shrestha',
                 email: 'ghimiren-2057@gmail.com', //gives error because email is not valid
                 password: 'secret',
+                role: Roles.CUSTOMER,
             };
 
             //Act
@@ -399,6 +414,7 @@ describe('POST /auth/register', () => {
                 lastName: 'Shrestha',
                 email: 'ghimiren-2057@gmail.com',
                 password: 'secr', //gives error because password is less than 8 characters
+                role: Roles.CUSTOMER,
             };
 
             //Act
@@ -422,6 +438,7 @@ describe('POST /auth/register', () => {
                 lastName: 'Shrestha',
                 email: 'ghimiren-2057@gmail.com',
                 password: 'secret',
+                role: Roles.CUSTOMER,
             };
 
             //Act
