@@ -13,7 +13,9 @@
         "prepare": "husky",
         "start": "ts-node src/index.ts",
         "migration:generate": "typeorm-ts-node-commonjs migration:generate --dataSource=src/config/data-source.ts",
-        "migration:run":"typeorm-ts-node-commonjs migration:run --dataSource=src/config/data-source.ts "
+        "migration:run":"typeorm-ts-node-commonjs migration:run --dataSource=src/config/data-source.ts ",
+        "migration:create":"typeorm-ts-node-commonjs migration:create "
+
     },
     "author": "Nabin <ghimiren2057@gmail.com>",
     "license": "ISC",
