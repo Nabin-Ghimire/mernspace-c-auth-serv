@@ -106,6 +106,7 @@
     },
     "exclude": [
         "**/*.spec.ts",
-        "tests"
+        "tests",
+        "coverage"
     ]
 }
