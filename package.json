@@ -9,7 +9,7 @@
         "format:fix": "prettier --write .",
         "format:check": "prettier --check .",
         "lint:fix": "eslint . --fix ",
-        "lint:check": "eslint .",
+        "lint": "eslint .",
         "test":"jest --no-cache --coverage --all --runInBand",
         "test:watch": "jest --watch --runInBand",
         "prepare": "husky",
