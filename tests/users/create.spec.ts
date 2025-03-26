@@ -15,6 +15,7 @@ describe('POST /users', () => {
     beforeAll(async () => {
         jwks = createJWKSMock('http://localhost:5501');
         connection = await AppDataSource.initialize();
+        console.log(connection);
     });
 
     beforeEach(async () => {
