@@ -223,8 +223,6 @@ export class AuthController {
             next(error);
             return;
         }
-
-        res.json({});
     }
 
     async logout(req: AuthRequest, res: Response, next: NextFunction) {
