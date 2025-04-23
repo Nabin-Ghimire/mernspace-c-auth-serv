@@ -15,7 +15,6 @@ export class UserService {
         tenantId,
         role,
     }: UserData) {
-        type tenantId = number | string;
         const user = await this.userRepository.findOne({ where: { email } });
         if (user) {
             const err = createHttpError(400, 'Email already exists!');
@@ -32,7 +31,7 @@ export class UserService {
                 email,
                 password: hashedPassword,
                 role,
-                tenantId: tenantId ? { id: tenantId } : undefined,
+                tenant: tenantId ? { id: tenantId } : undefined,
             });
 
             return userData;
