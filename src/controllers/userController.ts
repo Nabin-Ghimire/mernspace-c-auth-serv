@@ -2,7 +2,8 @@ import { Response, NextFunction, Request } from 'express';
 import { UserService } from '../services/UserService';
 import { CreateUserRequest, UpdateUserRequest } from '../types';
 import { Logger } from 'winston';
-import { validationResult } from 'express-validator';
+import { matchedData, validationResult } from 'express-validator';
+import { UserQueryParams } from '../types';
 import createHttpError from 'http-errors';
 
 export class UserController {
@@ -73,11 +74,19 @@ export class UserController {
     }
 
     async getAll(req: Request, res: Response, next: NextFunction) {
+        const validatedQuery = matchedData(req, { onlyValidData: true }); //uses only needed data and ignores the rest
         try {
-            const users = await this.userService.getAll();
+            const [users, count] = await this.userService.getAll(
+                validatedQuery as UserQueryParams,
+            );
 
             this.logger.info('All users have been fetched');
-            res.json(users);
+            res.json({
+                currentPage: validatedQuery.currentPage as number,
+                perPage: validatedQuery.perPage as number,
+                total: count,
+                data: users,
+            });
         } catch (err) {
             next(err);
         }
