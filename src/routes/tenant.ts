@@ -9,6 +9,8 @@ import { canAccess } from '../middlewares/canAccess';
 import { Roles } from '../constants';
 import tenantValidator from '../validators/tenant-validator';
 import { CreateTenantRequest } from '../types';
+import listUsersAndTenantValidators from '../validators/list-usersAndTenant-validators';
+import { Request } from 'express-jwt';
 
 const router = express.Router();
 const tenantRepository = AppDataSource.getRepository(Tenant);
@@ -24,6 +26,10 @@ router.post(
         tenantController.create(req, res, next),
 );
 
+router.get('/dropdown', (req: Request, res: Response, next: NextFunction) =>
+    tenantController.getAllTenantsForDropdown(req, res, next),
+);
+
 router.patch(
     '/:id',
     authenticate,
@@ -33,7 +39,12 @@ router.patch(
         tenantController.update(req, res, next),
 );
 
-router.get('/', (req, res, next) => tenantController.getAll(req, res, next));
+router.get(
+    '/',
+    listUsersAndTenantValidators,
+    (req: Request, res: Response, next: NextFunction) =>
+        tenantController.getAll(req, res, next),
+);
 
 router.get('/:id', authenticate, canAccess([Roles.ADMIN]), (req, res, next) =>
     tenantController.getOne(req, res, next),
