@@ -10,7 +10,7 @@ import { User } from '../entity/User';
 import logger from '../config/logger';
 import updateUserValidator from '../validators/update-user-validator';
 import createUserValidator from '../validators/create-user-validator';
-import listUsersValidators from '../validators/list-users-validators';
+import listUsersAndTenantValidators from '../validators/list-usersAndTenant-validators';
 import { Request } from 'express-jwt';
 
 const router = express.Router();
@@ -39,7 +39,7 @@ router.get(
     '/',
     authenticate,
     canAccess([Roles.ADMIN]),
-    listUsersValidators,
+    listUsersAndTenantValidators,
     (req: Request, res: Response, next: NextFunction) =>
         userController.getAll(req, res, next),
 );
