@@ -118,8 +118,8 @@ export class UserService {
             .take(validatedQuery.perPage)
             .orderBy('user.id', 'DESC')
             .getManyAndCount();
-        console.log(queryBuilder.getSql());
         return result;
+
         // return await this.userRepository.find();
     }
 
