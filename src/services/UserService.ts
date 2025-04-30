@@ -114,10 +114,12 @@ export class UserService {
             queryBuilder.andWhere('role=:role', { role: validatedQuery.role }); //if search query and role query are present that's why andWhere is used here instead of where only.
         }
         const result = queryBuilder
+            .leftJoinAndSelect('user.tenant', 'tenant')
             .skip((validatedQuery.currentPage - 1) * validatedQuery.perPage)
             .take(validatedQuery.perPage)
             .orderBy('user.id', 'DESC')
             .getManyAndCount();
+
         return result;
 
         // return await this.userRepository.find();

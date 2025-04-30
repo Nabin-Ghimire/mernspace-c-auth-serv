@@ -37,4 +37,4 @@ export default checkSchema(
         },
     },
     ['query'],
-); //This ['query'] will fetch the value from the request URL's params/query
+); //This ['query'] will fetch the value from the request URL's params/query(query tells parameters are in query.)
