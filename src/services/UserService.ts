@@ -94,7 +94,9 @@ export class UserService {
     }
 
     async getAll(validatedQuery: UserQueryParams) {
-        const queryBuilder = this.userRepository.createQueryBuilder('user'); //give allies when we work with sql to avoid ambiguous column names erro
+        const queryBuilder = this.userRepository
+            .createQueryBuilder('user')
+            .leftJoinAndSelect('user.tenant', 'tenant'); //give allies when we work with sql to avoid ambiguous column names erro
 
         if (validatedQuery.q) {
             const searchTerm = `%${validatedQuery.q}%`;
@@ -103,7 +105,9 @@ export class UserService {
                     qb.where(
                         "CONCAT(user.firstName, ' ', user.lastName) ILike :q",
                         { q: searchTerm },
-                    ).orWhere('user.email ILike :q', { q: searchTerm }); //search by first name and last name
+                    )
+                        .orWhere('user.email ILike :q', { q: searchTerm })
+                        .orWhere('tenant.name ILike :q', { q: searchTerm }); //search by tenant name'); //search by first name and last name
 
                     // qb.where("user.firstName ILike :q",{q:searchTerm}).orWhere("user.lastName ILike :q",{q:searchTerm}).orWhere("user.email ILike :q",{q:searchTerm});//Like only is case sensitive search but ILike is case insensitive search
                 }),
@@ -114,7 +118,6 @@ export class UserService {
             queryBuilder.andWhere('role=:role', { role: validatedQuery.role }); //if search query and role query are present that's why andWhere is used here instead of where only.
         }
         const result = queryBuilder
-            .leftJoinAndSelect('user.tenant', 'tenant')
             .skip((validatedQuery.currentPage - 1) * validatedQuery.perPage)
             .take(validatedQuery.perPage)
             .orderBy('user.id', 'DESC')
