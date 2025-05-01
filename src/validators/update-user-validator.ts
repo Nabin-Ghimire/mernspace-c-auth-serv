@@ -16,4 +16,17 @@ export default checkSchema({
         notEmpty: true,
         trim: true,
     },
+    email: {
+        isEmail: {
+            errorMessage: 'Email is not valid!',
+        },
+        notEmpty: true,
+        errorMessage: 'Email is required!',
+        trim: true,
+    },
+    tenantId: {
+        notEmpty: true,
+        errorMessage: 'Tenant ID is required!',
+        trim: true,
+    },
 });
