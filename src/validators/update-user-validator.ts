@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { checkSchema } from 'express-validator';
+import { UpdateUserRequest } from '../types';
 
 export default checkSchema({
     firstName: {
@@ -29,10 +29,8 @@ export default checkSchema({
         errorMessage: 'Tenant ID is required!',
         trim: true,
         custom: {
-            // eslint-disable-next-line @typescript-eslint/require-await
-            options: async (value: string, { req }) => {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                const role = req.body.role;
+            options: (value: string, { req }) => {
+                const role = (req as UpdateUserRequest).body.role;
                 if (role === 'admin') {
                     return true; // admin can have tenantId as null , return true means passing the validation
                 } else {
