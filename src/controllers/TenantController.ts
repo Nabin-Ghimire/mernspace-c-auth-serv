@@ -13,8 +13,7 @@ export class TenantController {
     async create(req: CreateTenantRequest, res: Response, next: NextFunction) {
         const result = validationResult(req);
         if (!result.isEmpty()) {
-            res.status(400).json({ errors: result.array() });
-            return;
+            return next(createHttpError(400, result.array()[0].msg as string));
         }
 
         const { name, address } = req.body;
@@ -32,8 +31,7 @@ export class TenantController {
         // Validation
         const result = validationResult(req);
         if (!result.isEmpty()) {
-            res.status(400).json({ errors: result.array() });
-            return;
+            return next(createHttpError(400, result.array()[0].msg as string));
         }
 
         const { name, address } = req.body;

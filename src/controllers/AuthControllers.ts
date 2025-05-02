@@ -24,8 +24,7 @@ export class AuthController {
         //Validation
         const result = validationResult(req);
         if (!result.isEmpty()) {
-            res.status(400).json({ errors: result.array() });
-            return;
+            return next(createHttpError(400, result.array()[0].msg as string));
         }
 
         const { firstName, lastName, email, password, role } = req.body;
@@ -89,8 +88,7 @@ export class AuthController {
         //Validation
         const result = validationResult(req);
         if (!result.isEmpty()) {
-            res.status(400).json({ errors: result.array() });
-            return;
+            return next(createHttpError(400, result.array()[0].msg as string));
         }
 
         const { email, password } = req.body;
