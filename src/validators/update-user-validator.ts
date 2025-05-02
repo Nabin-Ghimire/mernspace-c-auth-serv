@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { checkSchema } from 'express-validator';
 
 export default checkSchema({
@@ -25,8 +26,19 @@ export default checkSchema({
         trim: true,
     },
     tenantId: {
-        notEmpty: true,
         errorMessage: 'Tenant ID is required!',
         trim: true,
+        custom: {
+            // eslint-disable-next-line @typescript-eslint/require-await
+            options: async (value: string, { req }) => {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                const role = req.body.role;
+                if (role === 'admin') {
+                    return true; // admin can have tenantId as null , return true means passing the validation
+                } else {
+                    return !!value; // tenantId is required for non-admin users, return false if value is empty
+                }
+            },
+        },
     },
 });
