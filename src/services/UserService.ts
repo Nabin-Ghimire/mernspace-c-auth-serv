@@ -83,7 +83,7 @@ export class UserService {
                 lastName,
                 role,
                 email,
-                tenant: tenantId ? { id: tenantId } : undefined,
+                tenant: tenantId ? { id: tenantId } : null,
             });
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
