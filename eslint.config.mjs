@@ -29,6 +29,7 @@ export default tseslint.config(
             // "no-console": "error",
             'dot-notation': 'error',
             '@typescript-eslint/no-misused-promises': 'off',
+            '@typescript-eslint/no-unsafe-assignment': 'off',
             '@typescript-eslint/ban-ts-comment': [
                 'error',
                 { 'ts-ignore': false },
